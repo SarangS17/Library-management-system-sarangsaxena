@@ -1,17 +1,19 @@
-from database import load_data, save_data
+from database import read_file, write_file, STUDENTS_FILE
 
 def add_student():
-    data = load_data()
+    students = read_file(STUDENTS_FILE)
     name = input("Enter student name: ")
     reg_no = input("Enter registration number: ")
 
-    data["students"].append({"name": name, "reg_no": reg_no})
-    save_data(data)
+    record = f"{reg_no},{name}"
+    students.append(record)
+    write_file(STUDENTS_FILE, students)
     print("Student added successfully\n")
 
 def view_students():
-    data = load_data()
+    students = read_file(STUDENTS_FILE)
     print("\n---- Registered Students ----")
-    for std in data["students"]:
-        print(f"{std['reg_no']} - {std['name']}")
+    for std in students:
+        reg_no, name = std.split(",")
+        print(f"{reg_no} - {name}")
     print()
