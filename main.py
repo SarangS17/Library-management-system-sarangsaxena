@@ -1,32 +1,30 @@
 from books import add_book, view_books
 from students import add_student, view_students
-from database import load_data, save_data
+from database import read_file, write_file, ISSUED_FILE
 
 def issue_book():
-    data = load_data()
+    issues = read_file(ISSUED_FILE)
     reg_no = input("Enter student reg number: ")
     book_id = input("Enter book ID: ")
 
-    for book in data["books"]:
-        if book["book_id"] == book_id:
-            data["issued"].append({"reg_no": reg_no, "book_id": book_id})
-            save_data(data)
-            print("Book issued successfully\n")
-            return
-    print("Book not found\n")
+    record = f"{reg_no},{book_id}"
+    issues.append(record)
+    write_file(ISSUED_FILE, issues)
+    print("Book issued successfully\n")
 
 def return_book():
-    data = load_data()
+    issues = read_file(ISSUED_FILE)
     reg_no = input("Enter student reg number: ")
     book_id = input("Enter book ID to return: ")
 
-    for issue in data["issued"]:
-        if issue["reg_no"] == reg_no and issue["book_id"] == book_id:
-            data["issued"].remove(issue)
-            save_data(data)
-            print("Book returned successfully\n")
-            return
-    print("Record not found\n")
+    record = f"{reg_no},{book_id}"
+
+    if record in issues:
+        issues.remove(record)
+        write_file(ISSUED_FILE, issues)
+        print("Book returned successfully\n")
+    else:
+        print("Record not found\n")
 
 def menu():
     while True:
