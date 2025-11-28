@@ -1,18 +1,20 @@
-from database import load_data, save_data
+from database import read_file, write_file, BOOKS_FILE
 
 def add_book():
-    data = load_data()
+    books = read_file(BOOKS_FILE)
     title = input("Enter book title: ")
     author = input("Enter author name: ")
     book_id = input("Enter book ID: ")
 
-    data["books"].append({"title": title, "author": author, "book_id": book_id})
-    save_data(data)
+    record = f"{book_id},{title},{author}"
+    books.append(record)
+    write_file(BOOKS_FILE, books)
     print("Book added successfully\n")
 
 def view_books():
-    data = load_data()
+    books = read_file(BOOKS_FILE)
     print("\n---- Available Books ----")
-    for book in data["books"]:
-        print(f"{book['book_id']} - {book['title']} by {book['author']}")
+    for book in books:
+        book_id, title, author = book.split(",")
+        print(f"{book_id} - {title} by {author}")
     print()
