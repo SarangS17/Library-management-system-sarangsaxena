@@ -1,15 +1,15 @@
-import json
-import os
+BOOKS_FILE = "books.txt"
+STUDENTS_FILE = "students.txt"
+ISSUED_FILE = "issued.txt"
 
-DB_FILE = "library_data.json"
+def read_file(filename):
+    try:
+        with open(filename, "r") as file:
+            return [line.strip() for line in file.readlines()]
+    except:
+        return []
 
-def load_data():
-    if not os.path.exists(DB_FILE):
-        return {"books": [], "students": [], "issued": []}
-
-    with open(DB_FILE, "r") as file:
-        return json.load(file)
-
-def save_data(data):
-    with open(DB_FILE, "w") as file:
-        json.dump(data, file, indent=4)
+def write_file(filename, data):
+    with open(filename, "w") as file:
+        for item in data:
+            file.write(item + "\n")
